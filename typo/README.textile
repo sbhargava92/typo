@@ -1,0 +1,50 @@
+https://junqiyang-hw4.herokuapp.com/admin
+
+Login: admin
+Password: 1lYuUSg
+
+Rspec Case<br /><br />
+
+  describe "test_create" do<br />
+  ___before(:each) do <br />
+  _____get :new<br />
+  ___end<br /><br />
+    
+   _it 'should render template new' do<br />
+   ___assert_template 'new'<br />
+   ___assert_tag :tag => "table",<br />
+   _____:attributes => { :id => "category_container" }<br />
+   _end<br /><br />
+    
+   _it "shoud create new category" do<br />
+   ___post:new, :category => {:name => "new_cate", :keywords => "keys", :permalink => "GG"}<br />
+   ___assert_response :redirect, :action=> "index"<br />
+   ___expect(assigns(:category)).not_to be_nil<br />
+   ___expect(flash[:notice]).to eq("Category was successfully saved.")<br />
+   _end    <br />
+  end<br /><br />
+
+   _it "shoud edit category" do<br />
+   ___post:edit, :category => {:name => "general", :keywords => "keys", :permalink => "GG"}<br />
+   ___assert_response :redirect, :action=> "index"<br />
+   ___expect(assigns(:category)).not_to be_nil<br />
+   ___expect(flash[:notice]).to eq("Category was successfully saved.")<br />
+   _end<br /><br />
+
+Cucumber case<br /><br />
+Feature: Write Articles<br />
+  As a blog administrator<br />
+  In order to share my thoughts with the world<br />
+  I want to be able to add articles to my blog<br />
+<br />
+  Background:<br />
+    Given the blog is set up<br />
+    And I am logged into the admin panel<br />
+
+  Scenario: Successfully write articles<br />
+    Given I am on the new categories page<br />
+    When I fill in "category_name" with "test"<br />
+    And I fill in "category_keywords" with "keys"<br />
+    And I fill in "category_permalink" with "GG"<br />
+    Then I press "Save"<br />
+    Then I should see "Category was successfully saved."<br />
